@@ -9,5 +9,82 @@
     <script src="./main.js" defer></script>
     <title>Clock - Timer</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <div class="head">
+        <div class="logo">
+          <img class="logo-img" src="./images/icon.svg" alt="" />
+          <h1 class="logo-title">Clock</h1>
+        </div>
+        <div class="clock">
+          <div class="clock-block clock-title">Time</div>
+          <div class="clock-block clock-time">
+            <span class="clock-hours">00</span>
+            <span class="block-text">hours</span>
+          </div>
+          <div class="clock-block clock-time">
+            <span class="clock-minutes">00</span>
+            <span class="block-text">minutes</span>
+          </div>
+          <div class="clock-block clock-time">
+            <span class="clock-seconds">00</span>
+            <span class="block-text">seconds</span>
+          </div>
+          <div class="clock-block clock-meridiem">
+            <span class="clock-ampm">am</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="timer">
+          <div class="timer-select">
+            <div class="timer-section">
+              <div class="timer-title">
+                <img class="timer-icon" src="./images/icon.svg" alt="" />
+                <span class="timer-text">Set wake up time</span>
+              </div>
+              <select name="wake" id="wake">
+                <option value="">8 AM - 9 AM</option>
+                <option value="">9 AM - 10 AM</option>
+                <option value="">10 AM - 11 AM</option>
+                <option value="">11 AM - 12 PM</option>
+              </select>
+            </div>
+            <div class="timer-section">
+              <div class="timer-title">
+                <img class="timer-icon" src="./images/icon.svg" alt="" />
+                <span class="timer-text">Set lunch time</span>
+              </div>
+              <select name="lunch" id="lunch">
+                <option value="">8 AM - 9 AM</option>
+                <option value="">9 AM - 10 AM</option>
+                <option value="">10 AM - 11 AM</option>
+                <option value="">11 AM - 12 PM</option>
+              </select>
+            </div>
+            <div class="timer-section">
+              <div class="timer-title">
+                <img class="timer-icon" src="./images/icon.svg" alt="" />
+                <span class="timer-text">Set nap time</span>
+              </div>
+              <select name="nap" id="nap">
+                <option value="">8 AM - 9 AM</option>
+                <option value="">9 AM - 10 AM</option>
+                <option value="">10 AM - 11 AM</option>
+                <option value="">11 AM - 12 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="timer-notification">
+            <span>Good Afternoon!!</span>
+          </div>
+          <button class="timer-btn">Party time!</button>
+        </div>
+        <div class="time-image">
+          <img src="./images/icon.svg" alt="" />
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
