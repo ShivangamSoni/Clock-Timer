@@ -10,10 +10,15 @@ function getTime() {
   const s = date.getSeconds();
   const am = h >= 12 ? "pm" : "am";
 
-  hours.textContent = h%12 < 10 ? `0${h%12}` : h%12;
+  hours.textContent = h % 12 < 10 ? `0${h % 12}` : h % 12;
   minutes.textContent = m < 10 ? `0${m}` : m;
   seconds.textContent = s < 10 ? `0${s}` : s;
   ampm.textContent = am;
 }
 
 setInterval(getTime, 1000);
+
+/*
+hsl(268, 88%, 26%)
+hsl(290, 100%, 50%)
+*/

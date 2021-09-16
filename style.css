@@ -9,39 +9,53 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 100%;
   background-color: hsl(268, 88%, 26%);
   color: hsl(0, 0%, 100%);
   font-family: "Barlow", sans-serif;
 }
 
+body {
+  position: relative;
+}
+
 .container {
-  display: flex;
-  flex-flow: column nowrap;
+  display: grid;
+  grid-template-columns: 1fr;
   width: 1100px;
   max-width: 85%;
-  height: 100%;
   margin: 0 auto;
-  padding: 5rem 0 0;
+  padding: 5rem 0;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .head,
 .body {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 /* |1| Head ||*/
 /* |1.1| Logo || */
 .logo {
+  justify-self: flex-start;
   display: flex;
   flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
 }
 .logo-title {
   padding-left: 0.5rem;
   text-transform: uppercase;
+}
+.logo-img {
+  flex: 0 0;
+  width: 75px;
 }
 
 /* |1.2| Clock || */
@@ -50,13 +64,12 @@ body {
 }
 .clock {
   position: relative;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 0.4rem;
   background-color: hsl(0, 0%, 100%);
   border-radius: 0.7rem;
-  padding: 0.5rem 1rem;
-  color: black;
+  padding: 1rem;
 }
 .clock::before,
 .clock::after {
@@ -80,9 +93,7 @@ body {
 .clock-block {
   display: grid;
   place-items: center;
-  flex: 0 0 15%;
   padding: 1rem 0.5rem;
-  margin: 0 0.5em;
   border-radius: 0.3rem;
   color: hsl(268, 88%, 26%);
 }
@@ -96,10 +107,10 @@ body {
   content: ":";
   display: inline;
   position: absolute;
-  right: -20%;
+  right: -10%;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.5em;
+  font-size: 1.2rem;
 }
 
 /* || Clock Time & Text || */
@@ -111,7 +122,7 @@ body {
 
 .clock-time {
   background-color: hsl(290, 100%, 50%, 0.17);
-  font-size: 1.1rem;
+  font-size: 0.8rem;
 }
 
 .clock-hours,
@@ -140,22 +151,7 @@ body {
 /* || 2. Body || */
 .body {
   margin-top: 3rem;
-  justify-content: space-around;
-  align-items: stretch;
-  height: 50%;
 }
-.timer,
-.time-image {
-  flex: 0 0 50%;
-  /* outline: 2px solid white; */
-}
-
-/* .timer {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-  justify-content: space-evenly;
-} */
 
 .timer-select {
   background-color: hsl(0, 0%, 100%);
@@ -168,22 +164,30 @@ body {
   padding: 1.5rem 1rem;
   position: relative;
 }
-/* .timer-section:nth-child(1)::after,
+.timer-section:nth-child(1)::after,
 .timer-section:nth-child(2)::after {
   content: "";
   position: absolute;
   top: 70%;
-  left: 6.5%;
+  left: 2.5ch;
   height: 55%;
   border: 1px solid hsl(0, 0%, 70%);
+  border-radius: 1rem;
   background-color: hsl(0, 0%, 100%);
-} */
+}
+
+.timer-title {
+  margin-left: -2.5%;
+  display: flex;
+  align-items: center;
+}
 
 .timer-icon {
-  width: 20px;
+  width: 30px;
 }
 .timer-text {
   font-size: 1.1rem;
+  padding: 0 0.3rem;
   text-transform: capitalize;
 }
 
@@ -226,5 +230,61 @@ body {
 
 .time-image {
   display: grid;
-  place-items: center;
+  padding: 2rem 0.5rem 1rem;
+  background-color: hsl(0, 0%, 100%);
+  border-radius: 2rem;
+}
+
+.image-text {
+  display: block;
+  align-self: flex-start;
+  font-size: 2rem;
+  text-transform: uppercase;
+  padding-left: 1rem;
+  color: hsl(268, 88%, 26%);
+  font-weight: 900;
+}
+
+.time-image img {
+  align-self: flex-end;
+  justify-self: center;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    position: static;
+    transform: none;
+  }
+  .head,
+  .body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .head {
+    grid-template-rows: 1fr;
+  }
+  .logo {
+    display: none;
+  }
+  .clock {
+    position: relative;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 1fr);
+    row-gap: 0.5rem;
+    place-items: center;
+  }
+  .clock::before,
+  .clock::after {
+    display: none;
+  }
+  .clock-block {
+    padding: 0;
+    width: 40%;
+  }
+  .clock-block:nth-child(2)::after,
+  .clock-block:nth-child(3)::after {
+    display: none;
+  }
 }
