@@ -1,24 +1,48 @@
-@import url("https://fonts.googleapis.com/css2?family=Barlow&display=swap");
+/* || Fonts || */
+@import url("https://fonts.googleapis.com/css2?family=Barlow&family=Manrope&display=swap");
+@font-face {
+  font-family: bauhaus;
+  src: url("./assets/fonts/Bauhas/BauhausHeavyBT.woff") format("woff"), url("./assets/fonts/Bauhas/BauhausHeavyBT.woff2") format("woff2");
+}
+
+/* || Color & Font Variables || */
+:root {
+  --primary-color: hsl(268, 88%, 26%);
+  --text-color-1: hsl(282, 84%, 41%);
+  --text-color-2: hsl(263, 84%, 63%);
+  --block-bg: hsl(281, 100%, 94%);
+  --white: hsl(0, 0%, 100%);
+  --black: hsl(0, 0%, 0%);
+  --gradient: hsl(263, 84%, 63%) 0%, hsl(290, 100%, 50%) 60%;
+
+  --selection-bg: hsl(198, 100%, 93%);
+  --select-text: hsla(198, 100%, 46%, 0.871);
+
+  --font-family-1: "Manrope", sans-serif;
+  --font-family-2: "Barlow", sans-serif;
+  --font-family-3: bauhaus;
+}
+
+/* || CSS Reset || */
 *,
 *::after,
 *::before {
   box-sizing: border-box;
 }
-
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: hsl(268, 88%, 26%);
-  color: hsl(0, 0%, 100%);
-  font-family: "Barlow", sans-serif;
+  background-color: var(--primary-color);
+  color: var(--white);
+  font-family: var(--font-family-1);
 }
 
+/* || Main Container || */
 body {
   position: relative;
 }
-
 .container {
   display: grid;
   grid-template-columns: 1fr;
@@ -33,6 +57,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
+/* || Common Head & Body Grid || */
 .head,
 .body {
   display: grid;
@@ -40,8 +65,8 @@ body {
   gap: 2rem;
 }
 
-/* |1| Head ||*/
-/* |1.1| Logo || */
+/* || 1. Head ||*/
+/* || 1.1 Logo || */
 .logo {
   justify-self: flex-start;
   display: flex;
@@ -58,7 +83,7 @@ body {
   width: 75px;
 }
 
-/* |1.2| Clock || */
+/* || 1.2 Clock || */
 .head {
   isolation: isolate;
 }
@@ -67,10 +92,12 @@ body {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   column-gap: 0.4rem;
-  background-color: hsl(0, 0%, 100%);
+  background-color: var(--white);
   border-radius: 0.7rem;
   padding: 1rem;
 }
+
+/* || Clock Steps || */
 .clock::before,
 .clock::after {
   content: "";
@@ -79,25 +106,27 @@ body {
   height: 100%;
   left: 50%;
   transform: translateX(-50%);
-  top: 20%;
+  top: 16%;
   border-radius: inherit;
   background-color: hsl(0, 0%, 100%, 0.4);
   z-index: -1;
 }
 .clock::after {
   width: 80%;
-  top: 10%;
+  top: 9%;
   background-color: hsl(0, 0%, 100%, 0.3);
 }
+
 /* || Clock Blocks || */
 .clock-block {
   display: grid;
   place-items: center;
   padding: 1rem 0.5rem;
   border-radius: 0.3rem;
-  color: hsl(268, 88%, 26%);
+  color: var(--text-color-1);
 }
-/* Colon Between Hour:Minute:Second */
+
+/* || Colon Between Hour:Minute:Second || */
 .clock-block:nth-child(2),
 .clock-block:nth-child(3) {
   position: relative;
@@ -119,12 +148,17 @@ body {
   text-transform: uppercase;
   font-size: 1.5rem;
 }
-
+.clock-title {
+  color: var(--primary-color);
+}
 .clock-time {
-  background-color: hsl(290, 100%, 50%, 0.17);
+  background-color: var(--block-bg);
   font-size: 0.8rem;
 }
-
+.clock-time,
+.clock-meridiem {
+  font-family: var(--font-family-2);
+}
 .clock-hours,
 .clock-minutes,
 .clock-seconds,
@@ -133,16 +167,14 @@ body {
   text-align: center;
   text-transform: capitalize;
 }
-
 .clock-hours,
 .clock-minutes,
 .clock-seconds {
   font-size: 2rem;
 }
-
 .clock-meridiem {
-  background-image: linear-gradient(130deg, hsl(270, 100%, 60%) 0%, hsl(290, 100%, 50%));
-  color: hsl(0, 0%, 100%);
+  background-image: linear-gradient(130deg, var(--gradient));
+  color: var(--white);
 }
 .clock-meridiem .clock-ampm {
   font-weight: 900;
@@ -153,9 +185,10 @@ body {
   margin-top: 3rem;
 }
 
+/* || 2.1 Timer Selection Section || */
 .timer-select {
-  background-color: hsl(0, 0%, 100%);
-  color: hsl(268, 88%, 26%);
+  background-color: var(--white);
+  color: var(--primary-color);
   border-radius: 1rem;
 }
 .timer-section {
@@ -164,6 +197,8 @@ body {
   padding: 1.5rem 1rem;
   position: relative;
 }
+
+/* Time-Line Between Icons*/
 .timer-section:nth-child(1)::after,
 .timer-section:nth-child(2)::after {
   content: "";
@@ -173,15 +208,14 @@ body {
   height: 55%;
   border: 1px solid hsl(0, 0%, 70%);
   border-radius: 1rem;
-  background-color: hsl(0, 0%, 100%);
 }
 
+/* || Timer Title & Icon || */
 .timer-title {
   margin-left: -2.5%;
   display: flex;
   align-items: center;
 }
-
 .timer-icon {
   width: 30px;
 }
@@ -191,13 +225,33 @@ body {
   text-transform: capitalize;
 }
 
-.timer-section select {
-  background-color: hsl(0, 0%, 100%);
+/* || Select || */
+.select-box select {
+  appearance: none;
+  width: 100%;
+  background-color: var(--white);
   outline: 1px solid hsl(0, 0%, 80%);
-  color: hsl(268, 88%, 26%);
+  color: var(--black);
   border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+.select-box::after {
+  content: "";
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  transform: translate(7%, -50%);
+  border-top: 8px solid var(--primary-color);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.select-box select:is(:hover, :focus) {
+  outline-color: var(--select-text);
 }
 
+/* || Timer Notification || */
 .timer-notification {
   width: 100%;
   font-size: 2rem;
@@ -210,14 +264,15 @@ body {
   padding: 0.5rem 0.7rem;
 }
 
+/* || Timer Button || */
 .timer-btn {
   display: inline-block;
   padding: 1rem 5rem;
   outline: none;
   border: transparent;
   border-radius: 0.3rem;
-  background-image: linear-gradient(to right, hsl(270, 100%, 60%), hsl(290, 100%, 50%));
-  color: hsl(0, 0%, 100%);
+  background-image: linear-gradient(to right, var(--gradient));
+  color: var(--white);
   font-size: 1.2rem;
   font-weight: 900;
   text-transform: capitalize;
@@ -225,64 +280,81 @@ body {
   cursor: pointer;
 }
 .timer-btn:hover {
-  background-image: linear-gradient(to left, hsl(270, 100%, 60%), hsl(290, 100%, 50%));
+  background-image: linear-gradient(to left, var(--gradient));
 }
 
+/* || 2.2 Timer Image Section || */
 .time-image {
   display: grid;
   padding: 2rem 0.5rem 1rem;
-  background-color: hsl(0, 0%, 100%);
+  background-color: var(--white);
   border-radius: 2rem;
 }
-
 .image-text {
   display: block;
   align-self: flex-start;
   font-size: 2rem;
   text-transform: uppercase;
   padding-left: 1rem;
-  color: hsl(268, 88%, 26%);
-  font-weight: 900;
+  color: var(--text-color-2);
+  font-weight: 700;
+  font-family: var(--font-family-3);
 }
-
 .time-image img {
   align-self: flex-end;
   justify-self: center;
   max-width: 100%;
 }
 
-@media screen and (max-width: 800px) {
+/* 3. Responsive Changes*/
+@media screen and (max-width: 850px) {
+  /* Changing Font-Size so UI is Adjusted */
+  html {
+    font-size: 12px;
+  }
+  /*
+    Absolute Position Having Problem in Mobile Devices.
+    So, on smaller devices Using margin: auto
+  */
   .container {
     position: static;
     transform: none;
   }
+
+  /* Single Column Layout */
   .head,
   .body {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }
+
+  /* Hiding Logo. So, Single Row for Head*/
   .head {
     grid-template-rows: 1fr;
   }
   .logo {
     display: none;
   }
-  .clock {
-    position: relative;
 
+  /* Single Column Clock Layout */
+  .clock {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(5, 1fr);
     row-gap: 0.5rem;
     place-items: center;
   }
-  .clock::before,
+  /* Adjusting Clock Steps */
+  .clock::before {
+    top: 7%;
+  }
   .clock::after {
-    display: none;
+    top: 4%;
   }
   .clock-block {
     padding: 0;
     width: 40%;
   }
+  /* Removing : */
   .clock-block:nth-child(2)::after,
   .clock-block:nth-child(3)::after {
     display: none;
