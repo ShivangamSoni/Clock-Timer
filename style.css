@@ -106,15 +106,15 @@ body {
   height: 100%;
   left: 50%;
   transform: translateX(-50%);
-  top: 16%;
+  top: 17%;
   border-radius: inherit;
-  background-color: hsl(0, 0%, 100%, 0.4);
+  background-color: hsl(0, 0%, 80%, 0.35);
   z-index: -1;
 }
 .clock::after {
   width: 80%;
   top: 9%;
-  background-color: hsl(0, 0%, 100%, 0.3);
+  background-color: hsl(0, 0%, 80%, 0.8);
 }
 
 /* || Clock Blocks || */
@@ -233,8 +233,8 @@ body {
   border-radius: 0.3rem;
 }
 .options-container {
-  max-height: 0;
   width: 100%;
+  height: 0;
   transform-origin: top;
   transform: scaleY(0);
   transition: all 500ms linear;
@@ -253,6 +253,9 @@ body {
   width: 100%;
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+.options-container .option {
+  box-shadow: 3px 3px 3px 0 hsl(0, 0%, 0%, 0.4), -3px 3px 3px 0 hsl(0, 0%, 0%, 0.3);
 }
 .selected {
   border: 1px solid hsl(0, 0%, 0%, 0.2);
@@ -282,13 +285,13 @@ body {
   color: var(--select-text);
   outline-color: var(--select-text);
 }
-.options-container .option:nth-child(1) {
-  border-top-right-radius: 1rem;
-  border-top-left-radius: 1rem;
+.options-container .option:nth-child(1):hover {
+  border-top-right-radius: 0.7rem;
+  border-top-left-radius: 0.7rem;
 }
-.options-container .option:nth-last-child(1) {
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
+.options-container .option:nth-last-child(1):hover {
+  border-bottom-right-radius: 0.7rem;
+  border-bottom-left-radius: 0.7rem;
 }
 .option label {
   cursor: pointer;
