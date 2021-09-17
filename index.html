@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="./assets/icons/clock.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./style.css" />
     <script src="./main.js" defer></script>
+    <!-- <script src="./customSelect.js" defer></script> -->
     <title>Clock - Timer</title>
   </head>
   <body>
@@ -45,12 +46,25 @@
                 <span class="timer-text">Set wake up time</span>
               </div>
               <div class="select-box">
-                <select name="wake" id="wake">
-                  <option value="">8 AM - 9 AM</option>
-                  <option value="">9 AM - 10 AM</option>
-                  <option value="">10 AM - 11 AM</option>
-                  <option value="">11 AM - 12 PM</option>
-                </select>
+                <div class="options-container">
+                  <div class="option">
+                    <input type="radio" name="wake" id="8AM" class="radio" />
+                    <label for="8AM">8 AM - 9 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="wake" id="9AM" class="radio" />
+                    <label for="9AM">9 AM - 10 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="wake" id="10AM" class="radio" />
+                    <label for="10AM">10 AM - 11 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="wake" id="11AM" class="radio" />
+                    <label for="11AM">11 AM - 12 PM</label>
+                  </div>
+                </div>
+                <div class="selected">Select a Time</div>
               </div>
             </div>
             <div class="timer-section">
@@ -59,12 +73,25 @@
                 <span class="timer-text">Set lunch time</span>
               </div>
               <div class="select-box">
-                <select name="lunch" id="lunch">
-                  <option value="">8 AM - 9 AM</option>
-                  <option value="">9 AM - 10 AM</option>
-                  <option value="">10 AM - 11 AM</option>
-                  <option value="">11 AM - 12 PM</option>
-                </select>
+                <div class="options-container">
+                  <div class="option">
+                    <input type="radio" name="lunch" id="8AM" class="radio" />
+                    <label for="8AM">8 AM - 9 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="lunch" id="9AM" class="radio" />
+                    <label for="9AM">9 AM - 10 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="lunch" id="10AM" class="radio" />
+                    <label for="10AM">10 AM - 11 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="lunch" id="11AM" class="radio" />
+                    <label for="11AM">11 AM - 12 PM</label>
+                  </div>
+                </div>
+                <div class="selected">Select a Time</div>
               </div>
             </div>
             <div class="timer-section">
@@ -73,12 +100,25 @@
                 <span class="timer-text">Set nap time</span>
               </div>
               <div class="select-box">
-                <select name="nap" id="nap">
-                  <option value="">8 AM - 9 AM</option>
-                  <option value="">9 AM - 10 AM</option>
-                  <option value="">10 AM - 11 AM</option>
-                  <option value="">11 AM - 12 PM</option>
-                </select>
+                <div class="options-container">
+                  <div class="option">
+                    <input type="radio" name="nap" id="8AM" class="radio" />
+                    <label for="8AM">8 AM - 9 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="nap" id="9AM" class="radio" />
+                    <label for="9AM">9 AM - 10 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="nap" id="10AM" class="radio" />
+                    <label for="10AM">10 AM - 11 AM</label>
+                  </div>
+                  <div class="option">
+                    <input type="radio" name="nap" id="11AM" class="radio" />
+                    <label for="11AM">11 AM - 12 PM</label>
+                  </div>
+                </div>
+                <div class="selected">Select a Time</div>
               </div>
             </div>
           </div>
@@ -88,8 +128,18 @@
           <button class="timer-btn">Party time!</button>
         </div>
         <div class="time-image">
+          <span class="image-text">Wake UP !!</span>
+          <img src="./assets/images/wakeup.svg" alt="" />
+        </div>
+
+        <div class="time-image hide">
           <span class="image-text">Lets have some lunch !!</span>
           <img src="./assets/images/lunch.svg" alt="" />
+        </div>
+
+        <div class="time-image hide">
+          <span class="image-text">Good Night !!</span>
+          <img src="./assets/images/sleep.svg" alt="" />
         </div>
       </div>
     </div>

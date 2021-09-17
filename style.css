@@ -136,7 +136,7 @@ body {
   content: ":";
   display: inline;
   position: absolute;
-  right: -10%;
+  right: -5%;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.2rem;
@@ -173,7 +173,7 @@ body {
   font-size: 2rem;
 }
 .clock-meridiem {
-  background-image: linear-gradient(130deg, var(--gradient));
+  background-image: linear-gradient(var(--gradient));
   color: var(--white);
 }
 .clock-meridiem .clock-ampm {
@@ -226,29 +226,77 @@ body {
 }
 
 /* || Select || */
-.select-box select {
-  appearance: none;
+.select-box {
+  display: flex;
+  flex-flow: column nowrap;
   width: 100%;
-  background-color: var(--white);
-  outline: 1px solid hsl(0, 0%, 80%);
-  color: var(--black);
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  position: relative;
+  border-radius: 0.3rem;
 }
-.select-box::after {
+.options-container {
+  max-height: 0;
+  width: 100%;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: all 500ms linear;
+  border-radius: inherit;
+  position: relative;
+  top: 2.5rem;
+  z-index: 1;
+}
+.options-container.active {
+  transform: scaleY(1);
+}
+.options-container .option,
+.selected {
+  background-color: var(--white);
+  color: var(--black);
+  width: 100%;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.selected {
+  border: 1px solid hsl(0, 0%, 0%, 0.2);
+  position: relative;
+  order: 0;
+  color: var(--primary-color);
+  border-radius: inherit;
+}
+.selected::after {
   content: "";
   position: absolute;
-  right: 7%;
-  top: 50%;
-  transform: translate(7%, -50%);
-  border-top: 8px solid var(--primary-color);
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
+  right: 0;
+  height: 100%;
+  width: 20px;
+  background-image: url("./assets/icons/arrow.svg");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: top center;
+  transition: all 500ms linear;
 }
-.select-box select:is(:hover, :focus) {
+.options-container.active + .selected::after {
+  transform: rotate(180deg);
+  background-position: bottom center;
+}
+.options-container .option:hover {
+  background-color: var(--selection-bg);
+  color: var(--select-text);
   outline-color: var(--select-text);
+}
+.options-container .option:nth-child(1) {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+}
+.options-container .option:nth-last-child(1) {
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+.option label {
+  cursor: pointer;
+  pointer-events: none;
+  width: 100%;
+}
+.option .radio {
+  display: none;
 }
 
 /* || Timer Notification || */
@@ -262,6 +310,11 @@ body {
   border-radius: 0.3rem;
   margin: 1rem 0;
   padding: 0.5rem 0.7rem;
+}
+.timer-notification.hide {
+  margin: 0;
+  padding: 0;
+  transform: scale(0);
 }
 
 /* || Timer Button || */
@@ -290,6 +343,9 @@ body {
   background-color: var(--white);
   border-radius: 2rem;
 }
+.time-image.hide {
+  display: none;
+}
 .image-text {
   display: block;
   align-self: flex-start;
@@ -310,7 +366,7 @@ body {
 @media screen and (max-width: 850px) {
   /* Changing Font-Size so UI is Adjusted */
   html {
-    font-size: 12px;
+    font-size: 14px;
   }
   /*
     Absolute Position Having Problem in Mobile Devices.
@@ -333,30 +389,12 @@ body {
     grid-template-rows: 1fr;
   }
   .logo {
-    display: none;
+    justify-self: center;
   }
-
-  /* Single Column Clock Layout */
-  .clock {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 1fr);
-    row-gap: 0.5rem;
-    place-items: center;
-  }
-  /* Adjusting Clock Steps */
-  .clock::before {
-    top: 7%;
-  }
-  .clock::after {
-    top: 4%;
-  }
-  .clock-block {
-    padding: 0;
-    width: 40%;
-  }
-  /* Removing : */
-  .clock-block:nth-child(2)::after,
-  .clock-block:nth-child(3)::after {
-    display: none;
+}
+/* Lowering Font-Size for Mobile */
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 12px;
   }
 }
