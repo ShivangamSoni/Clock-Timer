@@ -129,6 +129,12 @@ body {
   padding: 0;
   font-weight: 900;
   font-size: 2rem;
+  animation: pulse 1000ms infinite linear;
+}
+@keyframes pulse {
+  to {
+    opacity: 0;
+  }
 }
 
 /* || Clock Time & Text || */
