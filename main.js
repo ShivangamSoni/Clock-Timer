@@ -3,12 +3,13 @@ const hours = document.querySelector(".clock-hours");
 const minutes = document.querySelector(".clock-minutes");
 const seconds = document.querySelector(".clock-seconds");
 const ampm = document.querySelector(".clock-ampm");
-
-function leadingZero(time) {
-  return time < 10 ? `0${time}` : time;
-}
+const colons = document.querySelectorAll(".clock-colon");
 
 function getTime() {
+  function leadingZero(time) {
+    return time < 10 ? `0${time}` : time;
+  }
+
   const date = new Date();
   let h = date.getHours();
   const m = date.getMinutes();
@@ -23,7 +24,12 @@ function getTime() {
   ampm.textContent = am;
 }
 
-setInterval(getTime, 1000);
+(function initialize() {
+  colons[0].style.animationPlayState = "running";
+  colons[1].style.animationPlayState = "running";
+  setInterval(getTime, 1000);
+  getTime();
+})();
 
 // Custom Select
 const selectedList = document.querySelectorAll(".selected");
@@ -45,8 +51,10 @@ function setSelect(e) {
   console.log(radio.getAttribute("name") + ": " + label.textContent);
 }
 
-selectedList.forEach((select) => select.addEventListener("click", () => {
-  toggleSelect(select.previousElementSibling);
-}));
+selectedList.forEach((select) =>
+  select.addEventListener("click", () => {
+    toggleSelect(select.previousElementSibling);
+  }),
+);
 
 optionsList.forEach((option) => option.addEventListener("click", setSelect));
