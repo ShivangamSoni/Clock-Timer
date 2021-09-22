@@ -309,11 +309,14 @@ body {
   border-radius: 0.3rem;
   margin: 1rem 0;
   padding: 0.5rem 0.7rem;
+  transform-origin: top;
+  transition: 1000ms transform linear;
 }
 .timer-notification.hide {
-  margin: 0;
-  padding: 0;
-  transform: scale(0);
+  transform: scaleY(0);
+}
+.timer-notification span.hide {
+  display: none;
 }
 
 /* || Timer Button || */
@@ -342,8 +345,11 @@ body {
   background-color: var(--white);
   border-radius: 2rem;
 }
-.sub-section.hide {
+.sub-section {
   display: none;
+}
+.sub-section.active {
+  display: grid;
 }
 .image-text {
   display: block;
