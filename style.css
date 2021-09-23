@@ -310,13 +310,10 @@ body {
   margin: 1rem 0;
   padding: 0.5rem 0.7rem;
   transform-origin: top;
-  transition: 1000ms transform linear;
+  transition: 900ms transform linear;
 }
 .timer-notification.hide {
   transform: scaleY(0);
-}
-.timer-notification span.hide {
-  display: none;
 }
 
 /* || Timer Button || */
@@ -344,12 +341,6 @@ body {
   padding: 2rem;
   background-color: var(--white);
   border-radius: 2rem;
-}
-.sub-section {
-  display: none;
-}
-.sub-section.active {
-  display: grid;
 }
 .image-text {
   display: block;

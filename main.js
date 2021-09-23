@@ -7,12 +7,39 @@ const colons = document.querySelectorAll(".clock-colon");
 
 // Alarm Related Variables
 const notification = document.querySelector(".timer-notification");
+const imageBlock = document.querySelector(".time-image");
 const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
 const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
 const alarmTimeOuts = {
   wake: null,
   lunch: null,
   sleep: null,
+};
+const imageData = {
+  default: {
+    text: "Keep Chilling, Keep Working",
+    img: "./assets/images/default.svg",
+  },
+  wake: {
+    text: "Wake Up!!",
+    img: "./assets/images/wakeup.svg",
+    notification: "Good Morning!!",
+  },
+  lunch: {
+    text: "Let's have some Lunch!!",
+    img: "./assets/images/lunch.svg",
+    notification: "Eat Healthy!!",
+  },
+  sleep: {
+    text: "Take Some Rest, Sleep!!",
+    img: "./assets/images/sleep.svg",
+    notification: "Good Night!!",
+  },
+  party: {
+    text: String.fromCodePoint(0x1f639) + "Hamari Party Ho Rahi Hai" + String.fromCodePoint(0x1f639),
+    img: "./assets/images/party.svg",
+    notification: "Party Hard!!",
+  },
 };
 
 // Custom Select Related Variables
@@ -60,37 +87,40 @@ function getTime() {
 const partyBtn = document.querySelector(".timer-btn");
 partyBtn.addEventListener("click", partyStart);
 
-function partyStart(e) {
-  console.log("Start");
-
+function partyStart() {
   partyBtn.removeEventListener("click", partyStart);
   partyBtn.addEventListener("click", partyEnd);
 
-  const currentSection = document.querySelector(".sub-section.active");
-  const newSection = document.querySelector(`.sub-section[data-section-for="party"]`);
-  const notificationToShow = notification.querySelector(`span[data-for="party"]`);
-
   partyBtn.textContent = "End Party!";
 
-  currentSection.classList.toggle("active");
-  newSection.classList.toggle("active");
+  const key = "party";
+  const oldKey = imageBlock.dataset.for;
+  imageBlock.dataset.for = key;
 
+  const textSpan = imageBlock.querySelector(".image-text");
+  const img = imageBlock.querySelector("img");
+  const notificationSpan = notification.querySelector("span");
+
+  textSpan.textContent = imageData[key].text;
+  img.setAttribute("src", imageData[key].img);
+
+  notificationSpan.textContent = imageData[key].notification;
   notification.classList.toggle("hide");
-  notificationToShow.classList.toggle("hide");
 
   function partyEnd() {
-    console.log("End");
     partyBtn.removeEventListener("click", partyEnd);
     partyBtn.addEventListener("click", partyStart);
 
     partyBtn.textContent = "Party Time!";
 
-    currentSection.classList.toggle("active");
-    newSection.classList.toggle("active");
+    imageBlock.dataset.for = oldKey;
+
+    textSpan.textContent = imageData[oldKey].text;
+    img.setAttribute("src", imageData[oldKey].img);
 
     notification.classList.toggle("hide");
     setTimeout(() => {
-      notificationToShow.classList.toggle("hide");
+      notificationSpan.textContent = "";
     }, 1000);
   }
 }
@@ -150,27 +180,28 @@ function alarm(key) {
     timeout = 1100;
   }
   setTimeout(() => {
-    const currentSection = document.querySelector(".sub-section.active");
-    const newSection = document.querySelector(`.sub-section[data-section-for="${key}"]`);
-    const notificationToShow = notification.querySelector(`span[data-for="${key}"]`);
+    const oldKey = imageBlock.dataset.for;
+    imageBlock.dataset.for = key;
+    const textSpan = imageBlock.querySelector(".image-text");
+    const img = imageBlock.querySelector("img");
+    const notificationSpan = notification.querySelector("span");
 
-    currentSection.classList.toggle("active");
-    newSection.classList.toggle("active");
+    textSpan.textContent = imageData[key].text;
+    img.setAttribute("src", imageData[key].img);
 
+    notificationSpan.textContent = imageData[key].notification;
     notification.classList.toggle("hide");
-    notificationToShow.classList.toggle("hide");
 
     setTimeout(() => {
-      if (key !== "sleep") {
-        const defaultSection = document.querySelector(`.sub-section[data-section-for="default"]`);
-        newSection.classList.toggle("active");
-        defaultSection.classList.toggle("active");
-      }
+      imageBlock.dataset.for = oldKey;
+      textSpan.textContent = imageData[oldKey].text;
+      img.setAttribute("src", imageData[oldKey].img);
+
       notification.classList.toggle("hide");
       setTimeout(() => {
-        notificationToShow.classList.toggle("hide");
+        notificationSpan.textContent = "";
       }, 1000);
-    }, 4500);
+    }, 1000 * 60 * 30); // Set the Image & Text Back to Default after 30 Minutes
   }, timeout);
 }
 
