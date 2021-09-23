@@ -1,17 +1,37 @@
-// Clock
+// Clock Related Variables
 const hours = document.querySelector(".clock-hours");
 const minutes = document.querySelector(".clock-minutes");
 const seconds = document.querySelector(".clock-seconds");
 const ampm = document.querySelector(".clock-ampm");
 const colons = document.querySelectorAll(".clock-colon");
 
+// Alarm Related Variables
+const notification = document.querySelector(".timer-notification");
+const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
+const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
+
+// Custom Select Related Variables
+const selectedList = document.querySelectorAll(".selected");
+const optionsList = document.querySelectorAll(".option");
+
+selectedList.forEach((select) =>
+  select.addEventListener("click", () => {
+    toggleSelect(select.previousElementSibling);
+  }),
+);
+optionsList.forEach((option) => option.addEventListener("click", setSelect));
+
+// Initial Invocations
 (function initialize() {
   colons[0].style.animationPlayState = "running";
   colons[1].style.animationPlayState = "running";
   setInterval(getTime, 1000);
   getTime();
+  setSelected();
+  setAlarm();
 })();
 
+// Clock Functions
 function getTime() {
   function leadingZero(time) {
     return time < 10 ? `0${time}` : time;
@@ -31,13 +51,7 @@ function getTime() {
   ampm.textContent = am;
 }
 
-// Alarm
-const notification = document.querySelector(".timer-notification");
-const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
-const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || { sleep: 22 };
-setSelected();
-setAlarm();
-
+// Alarm Functions
 function setTimeValues(alarmFor, time) {
   const hours = time.split(" ").reduce((h, a) => {
     h = Number(h);
@@ -66,16 +80,18 @@ function setAlarm() {
   }
 
   for (let key in alarmTimes) {
-    const current = new Date();
-    const timeToAlarm = new Date();
-    timeToAlarm.setHours(alarmTimes[key]);
-    timeToAlarm.setMinutes(0);
-    timeToAlarm.setSeconds(0);
+    if (alarmTimes[key] !== null) {
+      const current = new Date();
+      const timeToAlarm = new Date();
+      timeToAlarm.setHours(alarmTimes[key]);
+      timeToAlarm.setMinutes(0);
+      timeToAlarm.setSeconds(0);
 
-    const difference = timeToAlarm.getTime() - current.getTime();
+      const difference = timeToAlarm.getTime() - current.getTime();
 
-    if (difference > 0) {
-      setTimeout(alarm.bind(null, key), difference);
+      if (difference > 0) {
+        setTimeout(alarm.bind(null, key), difference);
+      }
     }
   }
 }
@@ -103,17 +119,14 @@ function setSelected() {
   for (let key in alarmTimes) {
     if (alarmTimes[key] !== null) {
       const selected = document.querySelector(`div[data-select-for="${key}"]`);
-      const time = alarmTimes[key] % 12 || 0;
+      const time = alarmTimes[key] % 12 || 12;
       const am = alarmTimes[key] >= 12 ? "PM" : "AM";
       selected.textContent = `${time} ${am}`;
     }
   }
 }
 
-// Custom Select
-const selectedList = document.querySelectorAll(".selected");
-const optionsList = document.querySelectorAll(".option");
-
+// Custom Select Functions
 function toggleSelect(container) {
   container.classList.toggle("active");
 }
@@ -130,11 +143,3 @@ function setSelect(e) {
 
   setTimeValues(radio.getAttribute("name"), label.textContent);
 }
-
-selectedList.forEach((select) =>
-  select.addEventListener("click", () => {
-    toggleSelect(select.previousElementSibling);
-  }),
-);
-
-optionsList.forEach((option) => option.addEventListener("click", setSelect));
