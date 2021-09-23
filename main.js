@@ -9,6 +9,11 @@ const colons = document.querySelectorAll(".clock-colon");
 const notification = document.querySelector(".timer-notification");
 const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
 const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
+const alarmTimeOuts = {
+  wake: null,
+  lunch: null,
+  sleep: null,
+};
 
 // Custom Select Related Variables
 const selectedList = document.querySelectorAll(".selected");
@@ -51,6 +56,45 @@ function getTime() {
   ampm.textContent = am;
 }
 
+// Party
+const partyBtn = document.querySelector(".timer-btn");
+partyBtn.addEventListener("click", partyStart);
+
+function partyStart(e) {
+  console.log("Start");
+
+  partyBtn.removeEventListener("click", partyStart);
+  partyBtn.addEventListener("click", partyEnd);
+
+  const currentSection = document.querySelector(".sub-section.active");
+  const newSection = document.querySelector(`.sub-section[data-section-for="party"]`);
+  const notificationToShow = notification.querySelector(`span[data-for="party"]`);
+
+  partyBtn.textContent = "End Party!";
+
+  currentSection.classList.toggle("active");
+  newSection.classList.toggle("active");
+
+  notification.classList.toggle("hide");
+  notificationToShow.classList.toggle("hide");
+
+  function partyEnd() {
+    console.log("End");
+    partyBtn.removeEventListener("click", partyEnd);
+    partyBtn.addEventListener("click", partyStart);
+
+    partyBtn.textContent = "Party Time!";
+
+    currentSection.classList.toggle("active");
+    newSection.classList.toggle("active");
+
+    notification.classList.toggle("hide");
+    setTimeout(() => {
+      notificationToShow.classList.toggle("hide");
+    }, 1000);
+  }
+}
+
 // Alarm Functions
 function setTimeValues(alarmFor, time) {
   const hours = time.split(" ").reduce((h, a) => {
@@ -90,27 +134,44 @@ function setAlarm() {
       const difference = timeToAlarm.getTime() - current.getTime();
 
       if (difference > 0) {
-        setTimeout(alarm.bind(null, key), difference);
+        if (alarmTimeOuts[key] !== null) {
+          clearTimeout(alarmTimeOuts[key]);
+        }
+        alarmTimeOuts[key] = setTimeout(alarm.bind(null, key), difference);
       }
     }
   }
 }
 
 function alarm(key) {
-  const currentSection = document.querySelector(".sub-section.active");
-  const newSection = document.querySelector(`.sub-section[data-section-for="${key}"]`);
-  const notificationToShow = notification.querySelector(`span[data-for="${key}"]`);
-  currentSection.classList.remove("active");
-  newSection.classList.add("active");
-
-  notification.classList.toggle("hide");
-  notificationToShow.classList.toggle("hide");
+  let timeout = 0;
+  if (partyBtn.textContent === "End Party!") {
+    partyBtn.click();
+    timeout = 1100;
+  }
   setTimeout(() => {
+    const currentSection = document.querySelector(".sub-section.active");
+    const newSection = document.querySelector(`.sub-section[data-section-for="${key}"]`);
+    const notificationToShow = notification.querySelector(`span[data-for="${key}"]`);
+
+    currentSection.classList.toggle("active");
+    newSection.classList.toggle("active");
+
     notification.classList.toggle("hide");
+    notificationToShow.classList.toggle("hide");
+
     setTimeout(() => {
-      notificationToShow.classList.toggle("hide");
-    }, 1000);
-  }, 3000);
+      if (key !== "sleep") {
+        const defaultSection = document.querySelector(`.sub-section[data-section-for="default"]`);
+        newSection.classList.toggle("active");
+        defaultSection.classList.toggle("active");
+      }
+      notification.classList.toggle("hide");
+      setTimeout(() => {
+        notificationToShow.classList.toggle("hide");
+      }, 1000);
+    }, 4500);
+  }, timeout);
 }
 
 function setSelected() {

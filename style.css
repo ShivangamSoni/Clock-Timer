@@ -364,7 +364,7 @@ body {
 .time-image img {
   align-self: flex-end;
   justify-self: center;
-  max-width: 100%;
+  max-width: 90%;
 }
 
 /* StorySet Attribute */
