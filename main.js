@@ -53,6 +53,10 @@ selectedList.forEach((select) =>
 );
 optionsList.forEach((option) => option.addEventListener("click", setSelect));
 
+// Party Variables
+const partyBtn = document.querySelector(".timer-btn");
+partyBtn.addEventListener("click", partyStart);
+
 // Initial Invocations
 (function initialize() {
   colons[0].style.animationPlayState = "running";
@@ -84,9 +88,6 @@ function getTime() {
 }
 
 // Party
-const partyBtn = document.querySelector(".timer-btn");
-partyBtn.addEventListener("click", partyStart);
-
 function partyStart() {
   partyBtn.removeEventListener("click", partyStart);
   partyBtn.addEventListener("click", partyEnd);
@@ -105,7 +106,7 @@ function partyStart() {
   img.setAttribute("src", imageData[key].img);
 
   notificationSpan.textContent = imageData[key].notification;
-  notification.classList.toggle("hide");
+  notification.classList.remove("hide");
 
   function partyEnd() {
     partyBtn.removeEventListener("click", partyEnd);
@@ -118,7 +119,7 @@ function partyStart() {
     textSpan.textContent = imageData[oldKey].text;
     img.setAttribute("src", imageData[oldKey].img);
 
-    notification.classList.toggle("hide");
+    notification.classList.add("hide");
     setTimeout(() => {
       notificationSpan.textContent = "";
     }, 1000);
@@ -146,6 +147,7 @@ function setTimeValues(alarmFor, time) {
 
   localStorage.setItem(LOCAL_STORAGE_KEY_ALARM_TIME, JSON.stringify(alarmTimes));
   setAlarm();
+  setSelected();
 }
 
 function setAlarm() {
@@ -154,7 +156,7 @@ function setAlarm() {
   }
 
   for (let key in alarmTimes) {
-    if (alarmTimes[key] !== null) {
+    if (alarmTimes[key] !== null && alarmTimes[key] !== "default") {
       const current = new Date();
       const timeToAlarm = new Date();
       timeToAlarm.setHours(alarmTimes[key]);
@@ -173,11 +175,14 @@ function setAlarm() {
   }
 }
 
-function alarm(key) {
+function alarm(key, alarmDuration = 1000 * 60 * 60) {
   let timeout = 0;
   if (partyBtn.textContent === "End Party!") {
     partyBtn.click();
-    timeout = 1100;
+    timeout = 1200;
+  }
+  if (alarmTimeOuts[key] !== null) {
+    clearTimeout(alarmTimeOuts[key]);
   }
   setTimeout(() => {
     const oldKey = imageBlock.dataset.for;
@@ -190,18 +195,18 @@ function alarm(key) {
     img.setAttribute("src", imageData[key].img);
 
     notificationSpan.textContent = imageData[key].notification;
-    notification.classList.toggle("hide");
+    notification.classList.remove("hide");
 
-    setTimeout(() => {
+    alarmTimeOuts[key] = setTimeout(() => {
       imageBlock.dataset.for = oldKey;
       textSpan.textContent = imageData[oldKey].text;
       img.setAttribute("src", imageData[oldKey].img);
 
-      notification.classList.toggle("hide");
+      notification.classList.add("hide");
       setTimeout(() => {
         notificationSpan.textContent = "";
       }, 1000);
-    }, 1000 * 60 * 30); // Set the Image & Text Back to Default after 30 Minutes
+    }, alarmDuration);
   }, timeout);
 }
 
@@ -209,12 +214,47 @@ function setSelected() {
   if (alarmTimes === {}) return;
 
   for (let key in alarmTimes) {
-    if (alarmTimes[key] !== null) {
+    if (alarmTimes[key] !== null && alarmTimes[key] !== "default") {
       const selected = document.querySelector(`div[data-select-for="${key}"]`);
-      const time = alarmTimes[key] % 12 || 12;
-      const am = alarmTimes[key] >= 12 ? "PM" : "AM";
-      selected.textContent = `${time} ${am}`;
+      const time1 = alarmTimes[key] % 12 || 12;
+      const am1 = alarmTimes[key] >= 12 ? "PM" : "AM";
+      const time2 = (alarmTimes[key] + 1) % 12 || 12;
+      const am2 = alarmTimes[key] + 1 >= 12 ? "PM" : "AM";
+      selected.textContent = `${time1} ${am1} - ${time2} ${am2}`;
     }
+  }
+
+  let key = "default";
+  const currentHour = new Date().getHours();
+  if (currentHour >= alarmTimes["sleep"] && currentHour <= alarmTimes["sleep"] + 1) {
+    key = "sleep";
+  } else if (currentHour >= alarmTimes["lunch"] && currentHour <= alarmTimes["lunch"] + 1) {
+    key = "lunch";
+  } else if (currentHour >= alarmTimes["wake"] && currentHour <= alarmTimes["wake"] + 1) {
+    key = "wake";
+  }
+
+  if (key !== "default") {
+    const current = new Date();
+    const timeTillAlarm = new Date();
+    timeTillAlarm.setHours(alarmTimes[key] + 1);
+    timeTillAlarm.setMinutes(0);
+    timeTillAlarm.setSeconds(0);
+
+    const timeout = timeTillAlarm.getTime() - current.getTime();
+
+    alarm(key, timeout);
+  } else {
+    imageBlock.dataset.for = key;
+    const textSpan = imageBlock.querySelector(".image-text");
+    const img = imageBlock.querySelector("img");
+    const notificationSpan = notification.querySelector("span");
+
+    textSpan.textContent = imageData[key].text;
+    img.setAttribute("src", imageData[key].img);
+
+    notificationSpan.textContent = "";
+    notification.classList.add("hide");
   }
 }
 
@@ -232,6 +272,5 @@ function setSelect(e) {
   selected.textContent = label.textContent;
 
   const radio = option.querySelector("input");
-
-  setTimeValues(radio.getAttribute("name"), label.textContent);
+  setTimeValues(radio.getAttribute("name"), radio.id);
 }
