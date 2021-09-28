@@ -40,6 +40,9 @@ const imageData = {
     img: "./assets/images/party.svg",
     notification: "Party Hard!!",
   },
+  selectError: {
+    notification: "Two Events Can't have Same Time!! Select Some Other Time Duration.",
+  },
 };
 
 // Custom Select Related Variables
@@ -137,17 +140,32 @@ function setTimeValues(alarmFor, time) {
     }
   });
 
-  if (alarmFor.trim() === "wake") {
-    alarmTimes.wake = hours;
-  } else if (alarmFor.trim() === "lunch") {
-    alarmTimes.lunch = hours;
-  } else {
-    alarmTimes.sleep = hours;
+  let valid = true;
+  for (let key in alarmTimes) {
+    if (key !== alarmFor && alarmTimes[key] === hours && hours !== "default") {
+      valid = false;
+      break;
+    }
   }
 
-  localStorage.setItem(LOCAL_STORAGE_KEY_ALARM_TIME, JSON.stringify(alarmTimes));
-  setAlarm();
-  setSelected();
+  if (valid) {
+    alarmTimes[alarmFor] = hours;
+    localStorage.setItem(LOCAL_STORAGE_KEY_ALARM_TIME, JSON.stringify(alarmTimes));
+    setAlarm();
+    setSelected();
+  } else {
+    const notificationSpan = notification.querySelector("span");
+    notificationSpan.textContent = imageData.selectError.notification;
+    notification.classList.remove("hide");
+
+    setTimeout(() => {
+      notification.classList.add("hide");
+      setTimeout(() => {
+        notificationSpan.textContent = "";
+      }, 1000);
+    }, 4000);
+    setTimeout(setSelected, 5000);
+  }
 }
 
 function setAlarm() {
@@ -175,7 +193,7 @@ function setAlarm() {
   }
 }
 
-function alarm(key, alarmDuration = 1000 * 60 * 60) {
+function alarm(key, alarmDuration = 1000 * 60 * 60 * 2) {
   let timeout = 0;
   if (partyBtn.textContent === "End Party!") {
     partyBtn.click();
@@ -214,30 +232,34 @@ function setSelected() {
   if (alarmTimes === {}) return;
 
   for (let key in alarmTimes) {
+    const selected = document.querySelector(`div[data-select-for="${key}"]`);
     if (alarmTimes[key] !== null && alarmTimes[key] !== "default") {
-      const selected = document.querySelector(`div[data-select-for="${key}"]`);
       const time1 = alarmTimes[key] % 12 || 12;
       const am1 = alarmTimes[key] >= 12 ? "PM" : "AM";
-      const time2 = (alarmTimes[key] + 1) % 12 || 12;
-      const am2 = alarmTimes[key] + 1 >= 12 ? "PM" : "AM";
+      const time2 = (alarmTimes[key] + 2) % 12 || 12;
+      const am2 = alarmTimes[key] + 2 >= 12 ? "PM" : "AM";
       selected.textContent = `${time1} ${am1} - ${time2} ${am2}`;
+    } else {
+      selected.textContent = "Select a Time";
     }
   }
 
   let key = "default";
-  const currentHour = new Date().getHours();
-  if (currentHour >= alarmTimes["sleep"] && currentHour <= alarmTimes["sleep"] + 1) {
+  const date = new Date();
+  const currentHour = date.getHours();
+  const currentMinute = date.getMinutes();
+  if (currentHour >= alarmTimes["sleep"] && currentMinute >= 0 && currentHour <= alarmTimes["sleep"] + 1 && currentMinute <= 59) {
     key = "sleep";
-  } else if (currentHour >= alarmTimes["lunch"] && currentHour <= alarmTimes["lunch"] + 1) {
+  } else if (currentHour >= alarmTimes["lunch"] && currentMinute >= 0 && currentHour <= alarmTimes["lunch"] + 1 && currentMinute <= 59) {
     key = "lunch";
-  } else if (currentHour >= alarmTimes["wake"] && currentHour <= alarmTimes["wake"] + 1) {
+  } else if (currentHour >= alarmTimes["wake"] && currentMinute >= 0 && currentHour <= alarmTimes["wake"] + 1 && currentMinute <= 59) {
     key = "wake";
   }
 
   if (key !== "default") {
     const current = new Date();
     const timeTillAlarm = new Date();
-    timeTillAlarm.setHours(alarmTimes[key] + 1);
+    timeTillAlarm.setHours(alarmTimes[key] + 2);
     timeTillAlarm.setMinutes(0);
     timeTillAlarm.setSeconds(0);
 
