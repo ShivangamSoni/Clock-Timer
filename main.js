@@ -137,7 +137,7 @@
     let setDefault = true;
 
     for (let key in alarmTimes) {
-      if (currentHour >= alarmTimes[key] && currentHour <= alarmTimes[key] + 1 && currentMinute <= 59) {
+      if (currentHour == alarmTimes[key] && currentMinute <= 59) {
         setDefault = false;
         displayData(key);
       }
@@ -179,7 +179,7 @@
       if (alarmTimes[key] !== null && alarmTimes[key] !== "default") {
         const time1 = leadingZero(alarmTimes[key] % 12 || 12);
         const am1 = alarmTimes[key] >= 12 ? "PM" : "AM";
-        const time2 = leadingZero((alarmTimes[key] + 2) % 12 || 12);
+        const time2 = leadingZero((alarmTimes[key] + 1) % 12 || 12);
         const am2 = alarmTimes[key] + 2 >= 12 ? "PM" : "AM";
         selected.textContent = `${time1} ${am1} - ${time2} ${am2}`;
       } else {
