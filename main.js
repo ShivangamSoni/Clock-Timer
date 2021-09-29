@@ -174,9 +174,11 @@
   function setSelected() {
     if (alarmTimes === {}) return;
 
-    for (let key in alarmTimes) {
+    const keys = ["wake", "lunch", "sleep"];
+
+    for (let key of keys) {
       const selected = document.querySelector(`div[data-select-for="${key}"]`);
-      if (alarmTimes[key] !== null && alarmTimes[key] !== "default") {
+      if (alarmTimes[key] !== undefined && alarmTimes[key] !== "default" && alarmTimes[key] !== null) {
         const time1 = leadingZero(alarmTimes[key] % 12 || 12);
         const am1 = alarmTimes[key] >= 12 ? "PM" : "AM";
         const time2 = leadingZero((alarmTimes[key] + 1) % 12 || 12);
