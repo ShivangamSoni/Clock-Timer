@@ -183,7 +183,7 @@
         const time1 = leadingZero(alarmTimes[key] % 12 || 12);
         const am1 = alarmTimes[key] >= 12 ? "PM" : "AM";
         const time2 = leadingZero((alarmTimes[key] + 1) % 12 || 12);
-        const am2 = alarmTimes[key] + 2 >= 12 ? "PM" : "AM";
+        const am2 = alarmTimes[key] + 1 >= 12 ? "PM" : "AM";
         selected.textContent = `${time1} ${am1} - ${time2} ${am2}`;
       } else {
         selected.textContent = "Select a Time";
