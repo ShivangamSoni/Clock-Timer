@@ -13,7 +13,6 @@
   let notificationTimeOut = null;
   const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
   const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
-  const alarmTimes = {};
   const imageData = {
     default: {
       text: "Keep Chilling, Keep Working",
