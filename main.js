@@ -12,7 +12,7 @@
   let paused = false;
   let notificationTimeOut = null;
   const LOCAL_STORAGE_KEY_ALARM_TIME = "app.alarm";
-  // const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
+  const alarmTimes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_ALARM_TIME)) || {};
   const alarmTimes = {};
   const imageData = {
     default: {
@@ -114,7 +114,7 @@
 
     if (valid) {
       alarmTimes[alarmFor] = hours;
-      // localStorage.setItem(LOCAL_STORAGE_KEY_ALARM_TIME, JSON.stringify(alarmTimes));
+      localStorage.setItem(LOCAL_STORAGE_KEY_ALARM_TIME, JSON.stringify(alarmTimes));
     } else {
       clearTimeout(notificationTimeOut);
       displayData("selectError");
